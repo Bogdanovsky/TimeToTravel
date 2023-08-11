@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/unit_margin">
+
+    <TextView
+        android:id="@+id/departure_city_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/main_text_size"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Saint-Petersburg" />
+
+    <TextView
+        android:id="@+id/arrival_city_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/main_text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Moscow" />
+
+    <TextView
+        android:id="@+id/departure_date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/unit_margin"
+        android:textSize="@dimen/date_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/takeoff_image_view"
+        tools:text="Jun, 22" />
+
+    <TextView
+        android:id="@+id/arrival_date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/unit_margin"
+        android:textSize="@dimen/date_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/landing_image_view"
+        tools:text="Aug, 12" />
+
+    <ImageView
+        android:id="@+id/takeoff_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/unit_margin"
+        android:src="@drawable/flight_takeoff_48px"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/departure_city_text_view" />
+
+    <ImageView
+        android:id="@+id/landing_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/unit_margin"
+        android:src="@drawable/flight_land_48px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arrival_city_text_view" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="@dimen/bar_height"
+        android:layout_margin="@dimen/unit_margin"
+        android:background="#999999"
+        app:layout_constraintBottom_toBottomOf="@id/landing_image_view"
+        app:layout_constraintEnd_toStartOf="@id/landing_image_view"
+        app:layout_constraintStart_toEndOf="@+id/takeoff_image_view"
+        app:layout_constraintTop_toTopOf="@id/landing_image_view" />
+
+    <TextView
+        android:id="@+id/price_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/double_margin"
+        android:text="@string/price_x_rub"
+        android:textSize="@dimen/main_text_size"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/takeoff_image_view"
+        app:layout_constraintTop_toBottomOf="@id/departure_date_text_view" />
+
+    <ImageView
+        android:id="@+id/favorite_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/unit_margin"
+        android:src="@drawable/favorite_48px"
+        app:layout_constraintEnd_toEndOf="@+id/arrival_date_text_view"
+        app:layout_constraintTop_toBottomOf="@id/arrival_date_text_view" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

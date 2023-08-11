@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/_8dp"
+    tools:context=".ui.fragments.FlightFragment">
+
+    <TextView
+        android:id="@+id/flight_departure_city_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_32dp"
+        android:textSize="@dimen/main_text_size"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Saint-Petersburg" />
+
+    <TextView
+        android:id="@+id/flight_arrival_city_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/main_text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/flight_departure_city_text_view"
+        tools:text="Moscow" />
+
+    <TextView
+        android:id="@+id/flight_departure_date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/unit_margin"
+        android:textSize="@dimen/date_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flight_takeoff_image_view"
+        tools:text="Jun, 22" />
+
+    <TextView
+        android:id="@+id/flight_arrival_date_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/unit_margin"
+        android:textSize="@dimen/date_text_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flight_landing_image_view"
+        tools:text="Aug, 12" />
+
+    <ImageView
+        android:id="@+id/flight_takeoff_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/unit_margin"
+        android:src="@drawable/flight_takeoff_48px"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flight_departure_city_text_view" />
+
+    <ImageView
+        android:id="@+id/flight_landing_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/unit_margin"
+        android:src="@drawable/flight_land_48px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flight_arrival_city_text_view" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="@dimen/bar_height"
+        android:layout_margin="@dimen/unit_margin"
+        android:background="@color/gray_9"
+        app:layout_constraintBottom_toBottomOf="@id/flight_landing_image_view"
+        app:layout_constraintEnd_toStartOf="@id/flight_landing_image_view"
+        app:layout_constraintStart_toEndOf="@+id/flight_takeoff_image_view"
+        app:layout_constraintTop_toTopOf="@id/flight_landing_image_view" />
+
+    <TextView
+        android:id="@+id/flight_price_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/double_margin"
+        android:text="@string/price_x_rub"
+        android:textSize="@dimen/main_text_size"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/flight_takeoff_image_view"
+        app:layout_constraintTop_toBottomOf="@id/flight_departure_date_text_view" />
+
+    <ImageView
+        android:id="@+id/flight_favorite_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/unit_margin"
+        android:src="@drawable/favorite_48px"
+        app:layout_constraintEnd_toEndOf="@+id/flight_arrival_date_text_view"
+        app:layout_constraintTop_toBottomOf="@id/flight_arrival_date_text_view" />
+
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flight_price_text_view" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

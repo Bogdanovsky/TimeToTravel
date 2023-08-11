@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Time to travel</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="price_x_rub">Price: %1$s rub</string>
+    <string name="back">back</string>
+</resources>
