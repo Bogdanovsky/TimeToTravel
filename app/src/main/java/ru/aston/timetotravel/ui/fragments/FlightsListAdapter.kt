@@ -13,8 +13,10 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class FlightsListAdapter(private var flightsList: List<Flight>) :
+class FlightsListAdapter() :
     RecyclerView.Adapter<FlightsListAdapter.FlightViewHolder>() {
+
+    private var flightsList: List<Flight> = listOf()
 
     fun updateFlightsList(newFlightsList: List<Flight>) {
         flightsList = newFlightsList

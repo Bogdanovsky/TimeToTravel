@@ -1,8 +1,11 @@
 package ru.aston.timetotravel.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import ru.aston.timetotravel.model.Flight
@@ -11,32 +14,37 @@ import ru.aston.timetotravel.repository.FlightsRepository
 
 class FlightsViewModel(private var flightsRepository: FlightsRepository) : ViewModel() {
 
-    val apiState: MutableStateFlow<ApiState> = MutableStateFlow(ApiState.Empty)
-    lateinit var listOfFlights: List<Flight>
+    private val _apiState: MutableStateFlow<ApiState> = MutableStateFlow(ApiState.Empty)
+    val apiState: StateFlow<ApiState>
+        get() = _apiState
+
+    private val _flightsList = MutableLiveData<List<Flight>>()
+    val flightsList: LiveData<List<Flight>>
+        get() = _flightsList
 
     init {
         getFlights()
     }
     private fun getFlights() = viewModelScope.launch {
-        apiState.value = ApiState.Loading
+        _apiState.value = ApiState.Loading
         flightsRepository.getFlightsList()
             .catch { e ->
-                apiState.value = ApiState.Failure(e)
+                _apiState.value = ApiState.Failure(e)
             }.collect { data ->
-                apiState.value = ApiState.Success(data)
-                listOfFlights = data
+                _apiState.value = ApiState.Success(data)
+                _flightsList.value = data
             }
     }
 
-    fun getFlightByToken(searchToken: String?): Flight = listOfFlights.first{
+    fun getFlightByToken(searchToken: String?): Flight? = _flightsList.value?.first{
         it.searchToken == searchToken
     }
 
     fun onFavoriteIconTouched(searchToken: String) {
-        listOfFlights.first { it.searchToken == searchToken }.apply {
+        _flightsList.value!!.first { it.searchToken == searchToken }.apply {
             isLiked = !isLiked
         }
     }
 
-    fun isLiked(token: String) = listOfFlights.first { it.searchToken == token }.isLiked
+    fun isLiked(token: String) = _flightsList.value!!.first { it.searchToken == token }.isLiked
 }

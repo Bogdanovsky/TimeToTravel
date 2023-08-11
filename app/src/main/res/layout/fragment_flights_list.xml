@@ -17,4 +17,17 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/error_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        tools:text="TEXT"
+        android:padding="@dimen/double_margin"
+        android:textAllCaps="false"
+        tools:visibility="visible"
+        android:textColor="#88DD0000"
+        />
+
 </FrameLayout>

@@ -39,7 +39,7 @@ class FlightFragment : Fragment(R.layout.fragment_flight) {
             requireActivity(),
             ViewModelFactory(FlightsRepository())
         )[FlightsViewModel::class.java]
-        flight = flightsViewModel.getFlightByToken(searchToken)
+        flight = flightsViewModel.getFlightByToken(searchToken) ?: throw Exception("No such token")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

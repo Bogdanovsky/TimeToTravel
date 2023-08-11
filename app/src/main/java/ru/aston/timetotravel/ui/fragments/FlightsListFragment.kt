@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import ru.aston.timetotravel.R
-import ru.aston.timetotravel.model.Flight
 import ru.aston.timetotravel.network.ApiState
 import ru.aston.timetotravel.repository.FlightsRepository
 import ru.aston.timetotravel.ui.activity.MainActivity
@@ -26,7 +25,6 @@ class FlightsListFragment : Fragment(R.layout.fragment_flights_list) {
 
     private lateinit var flightsViewModel: FlightsViewModel
     private lateinit var flightsListAdapter: FlightsListAdapter
-    private var flights: List<Flight> = listOf()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -45,8 +43,7 @@ class FlightsListFragment : Fragment(R.layout.fragment_flights_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        flightsViewModel.getFlights()
-        flightsListAdapter = FlightsListAdapter(flights)
+        flightsListAdapter = FlightsListAdapter()
         view.findViewById<RecyclerView>(R.id.flights_list_recycler_view).apply {
             adapter = flightsListAdapter
             layoutManager = LinearLayoutManager(
@@ -59,37 +56,45 @@ class FlightsListFragment : Fragment(R.layout.fragment_flights_list) {
 
         if (savedInstanceState == null) {
             lifecycleScope.launch {
-                collects(view)
+                showApiRequestStatus(view)
             }
-        } else {
-            flightsListAdapter.updateFlightsList(flightsViewModel.listOfFlights)
+        }
+        flightsViewModel.flightsList.observe(viewLifecycleOwner) {
+            flightsListAdapter.updateFlightsList(it)
         }
     }
 
-    private suspend fun collects(view: View) {
+    private suspend fun showApiRequestStatus(view: View) {
         repeatOnLifecycle(Lifecycle.State.CREATED) {
             val progressBar = view.findViewById<ProgressBar>(R.id.progress)
+            val errorTextView = view.findViewById<TextView>(R.id.error_text_view)
             flightsViewModel.apiState.collect {
                 when (it) {
                     is ApiState.Loading -> {
                         progressBar.visibility = View.VISIBLE
+                        errorTextView.visibility = View.INVISIBLE
                     }
-
                     is ApiState.Failure -> {
                         it.e.printStackTrace()
                         progressBar.visibility = View.GONE
-                        Toast.makeText(requireActivity(), "${it.e.message}", Toast.LENGTH_SHORT)
-                            .show()
+                        errorTextView.apply {
+                            visibility = View.VISIBLE
+                            text = context.getString(
+                                R.string.something_went_wrong_network_response,
+                                it.e.message
+                            )
+                        }
                     }
-
                     is ApiState.Success -> {
                         progressBar.visibility = View.GONE
-                        flights = it.data as List<Flight>
-                        flightsListAdapter.updateFlightsList(flights)
+                        errorTextView.visibility = View.INVISIBLE
                     }
-
                     is ApiState.Empty -> {
-                        Toast.makeText(requireActivity(), "Empty", Toast.LENGTH_SHORT).show()
+                        progressBar.visibility = View.GONE
+                        errorTextView.apply {
+                            visibility = View.VISIBLE
+                            text = context.getString(R.string.nothing_to_show)
+                        }
                     }
                 }
             }
