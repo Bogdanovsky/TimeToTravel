@@ -25,6 +25,7 @@ class FlightsViewModel(private var flightsRepository: FlightsRepository) : ViewM
     init {
         getFlights()
     }
+
     private fun getFlights() = viewModelScope.launch {
         _apiState.value = ApiState.Loading
         flightsRepository.getFlightsList()
@@ -36,7 +37,7 @@ class FlightsViewModel(private var flightsRepository: FlightsRepository) : ViewM
             }
     }
 
-    fun getFlightByToken(searchToken: String?): Flight? = _flightsList.value?.first{
+    fun getFlightByToken(searchToken: String?): Flight? = _flightsList.value?.first {
         it.searchToken == searchToken
     }
 

@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import ru.aston.timetotravel.R
 import ru.aston.timetotravel.network.ApiState
+import ru.aston.timetotravel.network.RetrofitClient
 import ru.aston.timetotravel.repository.FlightsRepository
 import ru.aston.timetotravel.ui.activity.MainActivity
+import ru.aston.timetotravel.ui.activity.OnItemTouchListener
 import ru.aston.timetotravel.viewmodel.FlightsViewModel
 import ru.aston.timetotravel.viewmodel.ViewModelFactory
 
@@ -36,14 +38,15 @@ class FlightsListFragment : Fragment(R.layout.fragment_flights_list) {
 
         flightsViewModel = ViewModelProvider(
             requireActivity(),
-            ViewModelFactory(FlightsRepository())
+            ViewModelFactory(FlightsRepository(RetrofitClient.retrofit))
         )[FlightsViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        flightsListAdapter = FlightsListAdapter()
+        flightsListAdapter =
+            FlightsListAdapter(flightsViewModel, requireActivity() as OnItemTouchListener)
         view.findViewById<RecyclerView>(R.id.flights_list_recycler_view).apply {
             adapter = flightsListAdapter
             layoutManager = LinearLayoutManager(
@@ -74,6 +77,7 @@ class FlightsListFragment : Fragment(R.layout.fragment_flights_list) {
                         progressBar.visibility = View.VISIBLE
                         errorTextView.visibility = View.INVISIBLE
                     }
+
                     is ApiState.Failure -> {
                         it.e.printStackTrace()
                         progressBar.visibility = View.GONE
@@ -85,10 +89,12 @@ class FlightsListFragment : Fragment(R.layout.fragment_flights_list) {
                             )
                         }
                     }
+
                     is ApiState.Success -> {
                         progressBar.visibility = View.GONE
                         errorTextView.visibility = View.INVISIBLE
                     }
+
                     is ApiState.Empty -> {
                         progressBar.visibility = View.GONE
                         errorTextView.apply {

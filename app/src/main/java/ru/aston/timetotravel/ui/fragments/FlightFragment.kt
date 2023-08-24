@@ -10,13 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import ru.aston.timetotravel.R
 import ru.aston.timetotravel.model.Flight
+import ru.aston.timetotravel.network.RetrofitClient
 import ru.aston.timetotravel.repository.FlightsRepository
 import ru.aston.timetotravel.ui.activity.MainActivity
+import ru.aston.timetotravel.utils.Utils
 import ru.aston.timetotravel.viewmodel.FlightsViewModel
 import ru.aston.timetotravel.viewmodel.ViewModelFactory
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Date
 
 private const val SEARCH_TOKEN = "SEARCH_TOKEN"
 
@@ -37,7 +36,7 @@ class FlightFragment : Fragment(R.layout.fragment_flight) {
         }
         flightsViewModel = ViewModelProvider(
             requireActivity(),
-            ViewModelFactory(FlightsRepository())
+            ViewModelFactory(FlightsRepository(RetrofitClient.retrofit))
         )[FlightsViewModel::class.java]
         flight = flightsViewModel.getFlightByToken(searchToken) ?: throw Exception("No such token")
     }
@@ -46,25 +45,17 @@ class FlightFragment : Fragment(R.layout.fragment_flight) {
         super.onViewCreated(view, savedInstanceState)
 
         with(view) {
-            val flightsViewModel = (context as MainActivity).flightsViewModel
             findViewById<Button>(R.id.back_button).setOnClickListener {
-                (context as MainActivity).supportFragmentManager.popBackStack()
+                parentFragmentManager.popBackStack()
             }
             findViewById<TextView>(R.id.flight_departure_city_text_view).text =
                 flight.startCity
             findViewById<TextView>(R.id.flight_arrival_city_text_view).text =
                 flight.endCity
-
-            val formatIn = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val formatOut = SimpleDateFormat("MMM, dd")
-            try {
-                val startDate: Date = formatIn.parse(flight.startDate)
-                findViewById<TextView>(R.id.flight_departure_date_text_view).text = formatOut.format(startDate)
-                val endDate: Date = formatIn.parse(flight.endDate)
-                findViewById<TextView>(R.id.flight_arrival_date_text_view).text = formatOut.format(endDate)
-            } catch (e: ParseException) {
-                e.printStackTrace()
-            }
+            findViewById<TextView>(R.id.flight_departure_date_text_view).text =
+                Utils.getFormattedDate(flight.startDate)
+            findViewById<TextView>(R.id.flight_arrival_date_text_view).text =
+                Utils.getFormattedDate(flight.endDate)
 
             findViewById<TextView>(R.id.flight_price_text_view).text =
                 context.getString(R.string.price_x_rub, flight.price.toString())

@@ -6,13 +6,14 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import ru.aston.timetotravel.R
 import ru.aston.timetotravel.databinding.ActivityMainBinding
+import ru.aston.timetotravel.network.RetrofitClient
 import ru.aston.timetotravel.repository.FlightsRepository
 import ru.aston.timetotravel.ui.fragments.FlightFragment
 import ru.aston.timetotravel.ui.fragments.FlightsListFragment
 import ru.aston.timetotravel.viewmodel.FlightsViewModel
 import ru.aston.timetotravel.viewmodel.ViewModelFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnItemTouchListener {
     private lateinit var binding: ActivityMainBinding
     lateinit var flightsViewModel: FlightsViewModel
 
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         flightsViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(FlightsRepository())
+            ViewModelFactory(FlightsRepository(RetrofitClient.retrofit))
         )[FlightsViewModel::class.java]
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun goToFlightFragment(searchToken: String) {
+    override fun goToFlightFragment(searchToken: String) {
         supportFragmentManager.commit {
             addToBackStack("FlightFragment")
             setReorderingAllowed(true)
