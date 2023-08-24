@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import ru.aston.timetotravel.R
 import ru.aston.timetotravel.network.ApiState
-import ru.aston.timetotravel.network.RetrofitClient
 import ru.aston.timetotravel.repository.FlightsRepository
 import ru.aston.timetotravel.ui.activity.MainActivity
 import ru.aston.timetotravel.ui.activity.OnItemTouchListener
@@ -38,7 +37,7 @@ class FlightsListFragment : Fragment(R.layout.fragment_flights_list) {
 
         flightsViewModel = ViewModelProvider(
             requireActivity(),
-            ViewModelFactory(FlightsRepository(RetrofitClient.retrofit))
+            ViewModelFactory(FlightsRepository())
         )[FlightsViewModel::class.java]
     }
 

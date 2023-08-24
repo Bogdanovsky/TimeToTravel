@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.aston.timetotravel.R
 import ru.aston.timetotravel.model.Flight
-import ru.aston.timetotravel.ui.activity.MainActivity
 import ru.aston.timetotravel.ui.activity.OnItemTouchListener
 import ru.aston.timetotravel.utils.Utils
 import ru.aston.timetotravel.viewmodel.FlightsViewModel
@@ -60,7 +59,7 @@ class FlightsListAdapter(
             priceTextView.text =
                 itemView.context.getString(R.string.price_x_rub, flight.price.toString())
             favoriteImageView.apply {
-                if ((this.context as MainActivity).flightsViewModel.isLiked(flight.searchToken)) {
+                if (flightsViewModel.isLiked(flight.searchToken)) {
                     setImageResource(R.drawable.favorite_filled_48px)
                 } else {
                     setImageResource(R.drawable.favorite_48px)

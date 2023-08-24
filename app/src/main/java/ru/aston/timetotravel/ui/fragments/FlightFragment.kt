@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import ru.aston.timetotravel.R
 import ru.aston.timetotravel.model.Flight
-import ru.aston.timetotravel.network.RetrofitClient
 import ru.aston.timetotravel.repository.FlightsRepository
 import ru.aston.timetotravel.ui.activity.MainActivity
 import ru.aston.timetotravel.utils.Utils
@@ -36,7 +35,7 @@ class FlightFragment : Fragment(R.layout.fragment_flight) {
         }
         flightsViewModel = ViewModelProvider(
             requireActivity(),
-            ViewModelFactory(FlightsRepository(RetrofitClient.retrofit))
+            ViewModelFactory(FlightsRepository())
         )[FlightsViewModel::class.java]
         flight = flightsViewModel.getFlightByToken(searchToken) ?: throw Exception("No such token")
     }
